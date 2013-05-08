@@ -17,6 +17,7 @@
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Fecha Nacimiento</th>
+                    <th>Ciudad de nacimiento</th>
                 </tr>
           </thead>
             <tbody>
@@ -27,6 +28,7 @@
                     <td><?php echo $user->getNombre();?></td>
                     <td><?php echo $user->getApellido();?></td>
                     <td><?php echo $user->getFechaNacimiento()->format('Y-m-d');?></td>
+                    <td><?php echo $user->getCiudadNacimiento();?></td>
                 </tr>
                 <?php } ?>
             </tbody>

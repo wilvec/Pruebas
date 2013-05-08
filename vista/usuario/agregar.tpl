@@ -1,9 +1,40 @@
 <!DOCTYPE html>
-
 <html lang="en">
     <head>
         <meta charset="utf-8" />
         <title><?php echo $titulo; ?></title>
+        <script type="text/javascript">
+            //Funcion de Ajax
+            function getAjax() {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    xmlhttp = new ActiveObject("Microsoft.XMLHTTP");
+                }
+                return xmlhttp;
+            }
+
+            function llenarCiudades(depto) {
+                var ajax = getAjax();
+                ajax.onreadystatechange = function() {
+                    if (ajax.readyState == 4) {
+                        if (ajax.status == 200) {
+                            var datos = ajax.responseText;
+                            alert(datos);
+                        }
+                    }
+                }
+                ajax.open("GET", "/Pruebas/usuario/listarciudad/" + depto, true);
+                ajax.send(null);
+            }
+            window.onload = function() {
+                document.getElementById('deptos').onchange = function() {
+                    var depto = document.getElementById('deptos').options[document.getElementById('deptos').selectedIndex].value;
+                    llenarCiudades(depto);
+                }
+            }
+        </script>
     </head>
     <body>
         <p>
@@ -29,8 +60,21 @@
                     <td><input name="fechanacimiento" id="fechanacimiento" type="text" /></td>
                 </tr>
                 <tr>
+                    <th scope="row">Ciudad de Nacimiento</th>
+                    <td>
+                        <select name="deptos" id="deptos">
+                            <?php foreach($deptos as $depto){ ?>
+                            <option value="<?php echo $depto['iddepto']; ?>"><?php echo $depto['departamento'];?></option>
+                            <?php } ?>
+                        </select>
+                        <br>
+                        <div id="combociudad"></div>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="2"><input name="agregarusuario" id="agregarusuario" type="submit" value="Guardar" /></td>
                 </tr>
+
             </table>
         </form>
         <p>&nbsp;</p>

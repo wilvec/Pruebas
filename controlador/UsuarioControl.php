@@ -42,6 +42,8 @@ class UsuarioControl extends Controlador {
 
     public function agregar() {
         $this->vista->set('titulo', 'Agregar Usuario');
+        $ciudad = new Ciudad();
+        $this->vista->set('deptos',  $ciudad->leerDepartamentos());
         return $this->vista->imprimir();
     }
 
@@ -74,6 +76,14 @@ class UsuarioControl extends Controlador {
         }
     }
 
+    public function listarCiudad($departamento=''){
+        $ciudad = new Ciudad();
+        $ciudades = $ciudad->leerCiudades($departamento);
+        $this->vista->set('ciudades',$ciudades);
+        return $this->vista->imprimir();
+    }
+    
+    
 }
 
 ?>

@@ -11,6 +11,8 @@ class Usuario extends Modelo {
     private $nombre;
     private $apellido;
     private $fechaNacimiento;
+    private $idCiudadNacimiento; //El campo no se llama igual en la base de datos OJO!
+    private $ciudadNacimiento;   //Para el nombre de la ciudad
 
     public function __construct() {
         parent::__construct();
@@ -29,6 +31,13 @@ class Usuario extends Modelo {
         if (array_key_exists('fechanacimiento', $props)) {
             $user->setFechaNacimiento(self::crearFecha($props['fechanacimiento']));
         }
+        if(array_key_exists('idciudad', $props)){
+            $user->setIdCiudadNacimiento($props['idciudad']);
+        }
+        
+        if(array_key_exists('ciudad', $props)){
+            $user->setCiudadnacimiento($props['ciudad']);
+        }
     }
 
     private function getParametros(Usuario $usuario) {
@@ -36,7 +45,8 @@ class Usuario extends Modelo {
             ':documento' => $usuario->getDocumento(),
             ':nombre' => $usuario->getNombre(),
             ':apellido' => $usuario->getApellido(),
-            ':fechanacimiento' => $this->formatearFecha($usuario->getFechaNacimiento())
+            ':fechanacimiento' => $this->formatearFecha($usuario->getFechaNacimiento()),
+            ':idciudad' => $usuario->getCiudadnacimiento()
         );
         return $parametros;
     }
@@ -73,17 +83,35 @@ class Usuario extends Modelo {
     public function setFechaNacimiento(DateTime $fechaNacimiento) {
         $this->fechaNacimiento = $fechaNacimiento;
     }
+    
+    public function getIdCiudadNacimiento() {
+        return $this->idCiudadNacimiento;
+    }
 
+    public function setIdCiudadNacimiento($idCiudadNacimiento) {
+        $this->idCiudadNacimiento = $idCiudadNacimiento;
+    }
+    
+    public function getCiudadNacimiento() {
+        return $this->ciudadNacimiento;
+    }
+
+    public function setCiudadNacimiento($ciudadNacimiento) {
+        $this->ciudadNacimiento = $ciudadNacimiento;
+    }
+
+        
     //Funciones CRUD
 
     public function crearUsuario(Usuario $user) {
-        $sql = "INSERT INTO usuario (documento, nombre, apellido, fechanacimiento) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO usuario (documento, nombre, apellido, fechanacimiento, idciudad) VALUES (?, ?, ?, ?, ?)";
         $this->__setSql($sql);
         $this->ejecutar($this->getParametros($user));
     }
 
     public function leerUsuarios() {
-        $sql = "SELECT documento, nombre, apellido, fechanacimiento FROM usuario";
+        $sql =  " SELECT u.documento, u.nombre, u.apellido, u.fechanacimiento, u.idciudad, c.nombre as ciudad FROM usuario u, ciudad c ";
+        $sql .= " WHERE u.idciudad = c.idciudad";
         $this->__setSql($sql);
         $resultado = $this->consultar($sql);
         $usuarios = array();
@@ -106,7 +134,7 @@ class Usuario extends Modelo {
     }
 
     public function actualizarUsuario(Usuario $user) {
-        $sql = "UPDATE usuario SET nombre=?, apellido=?, fechanacimiento=? WHERE documento=?";
+        $sql = "UPDATE usuario SET nombre=?, apellido=?, fechanacimiento=?, idciudad = ? WHERE documento=?";
         $this->__setSql($sql);
         $this->ejecutar($this->getParametros($user));
     }

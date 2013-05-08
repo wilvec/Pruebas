@@ -33,6 +33,7 @@ function cargadorClases(){
     require_once './config/Db.php';
     require_once './modelo/Modelo.php';
     require_once './modelo/Usuario.php';
+    require_once './modelo/Ciudad.php';
     require_once './controlador/Controlador.php';
     require_once './controlador/UsuarioControl.php';
     require_once './vista/Vista.php';
