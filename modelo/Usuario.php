@@ -124,13 +124,28 @@ class Usuario extends Modelo {
     }
 
     public function leerUsuarioPorDocumento($documento) {
-        //TODO: Mejorar esta forma!!!
         $usuarios = $this->leerUsuarios();
         foreach ($usuarios as $usuario) {
             if ($usuario->getDocumento() == $documento)
                 return $usuario;
         }
         return null;
+    }
+    
+    public function leerUsuarioPorClave($usuario, $clave){
+        //TODO: Hacer las funciones de encriptacion en php 
+        //$clave = encriptar_sha($clave)
+        
+        $sql = "SELECT * FROM usuario WHERE documento=? AND clave=SHA(?)";
+        $param = array($usuario,$clave);
+        $this->__setSql($sql);
+        $res = $this->consultar($sql, $param);
+        $usuario = NULL;
+        foreach ($res as $fila) {
+            $usuario = new Usuario();
+            $this->mapearUsuario($usuario, $fila);
+        }
+        return $usuario;
     }
 
     public function actualizarUsuario(Usuario $user) {
