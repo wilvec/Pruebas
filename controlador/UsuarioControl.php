@@ -38,9 +38,9 @@ class UsuarioControl extends Controlador {
             if ($usuario != null) {
                 $this->vista->set('titulo', 'Datos de ' . $usuario->getNombre());
                 $this->vista->set('usuario', $usuario);
-                $filename = './' . $usuario->getDocumento() . '.jpg';
+                $filename = './estatico/' . $usuario->getDocumento() . '.jpg';
                 file_put_contents($filename, $usuario->getFoto());
-                $this->vista->set('foto', $filename);
+                $this->vista->set('foto', $usuario->getDocumento() . '.jpg');
             } else {
                 //TODO: Esto se puede mejorar redireccionando a una pagina de error
                 $this->vista->set('titulo', 'Usuario no existe');

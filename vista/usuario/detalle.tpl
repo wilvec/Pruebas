@@ -14,7 +14,7 @@
   <tr>
     <th scope="row">&nbsp;</th>
     <td>
-    <img src="<?php echo $foto; ?>"/>
+    <img src="/Pruebas/estatico/<?php echo $foto; ?>"/>
     </td>
   </tr>
   <tr>
