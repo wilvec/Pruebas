@@ -7,5 +7,7 @@
     <body>
         <h2>FUERA</h2>
         USTED ESTA FUERA DE LA APLICACION
+        <br>
+        <a href="/Pruebas/usuario/login">Entrar</a>
     </body>
 </html>

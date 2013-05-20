@@ -37,6 +37,9 @@ function cargadorClases(){
     require_once './controlador/Controlador.php';
     require_once './controlador/UsuarioControl.php';
     require_once './vista/Vista.php';
+    require_once './utiles/class.phpmailer.php';
+    require_once './utiles/class.pop3.php';
+    require_once './utiles/class.smtp.php';
 }
 
 //spl_autoload_register(cargadorClases);

@@ -14,6 +14,12 @@ abstract class Modelo {
     protected $db;
 
     /**
+     * Objeto para la sentencia de PDO
+     * @var PDOStatement
+     */
+    protected $sentencia;
+
+    /**
      * Objeto de tipo string para manejo de las consultas en el modelo.
      * @var string
      */
@@ -56,6 +62,15 @@ abstract class Modelo {
     }
 
     /**
+     * Retorna el objeto sentencia del modelo actual
+     * @return PDOStatement
+     */
+    protected function prepararSentencia($sql) {
+        $this->sentencia = $this->db->prepare($sql);
+        return $this->sentencia;
+    }
+
+    /**
      * Función para ejecutar consultar de tipo SELECT.
      * Retorna un objeto de tipo PDOStatement, que tiene metainformación
      * sobre la consulta realizada.
@@ -65,11 +80,23 @@ abstract class Modelo {
     protected function consultar($sql = null, $param = null) {
         if ($sql == null)
             $sql = $this->sql;
-        $stmt = $this->db->prepare($sql);
-        if($param!=null)
-            $stmt->execute($param);
-        $stmt->execute();
-        $resultado = $stmt->fetchAll();
+        $this->sentencia = $this->db->prepare($sql);
+        if ($param != null)
+            $this->sentencia->execute($param);
+        $this->sentencia->execute();
+        $resultado = $this->sentencia->fetchAll();
+        return $resultado;
+    }
+
+    /**
+     * Función para ejecutar consultar de tipo SELECT.
+     * Retorna un objeto de tipo PDOStatement, que tiene metainformación
+     * 
+     * @return PDOStatement
+     */
+    protected function consultarSentencia() {
+        $this->sentencia->execute();
+        $resultado = $this->sentencia->fetchAll();
         return $resultado;
     }
 
@@ -78,11 +105,20 @@ abstract class Modelo {
      * @param array $parametros
      * @param string $sql
      */
-    protected function ejecutar($parametros, $sql = null) {
+    protected function ejecutar($parametros = null, $sql = null) {
         if ($sql == null)
             $sql = $this->sql;
-        $sentencia = $this->db->prepare($sql);
-        if (!$sentencia->execute(array_values($parametros))) {
+        $this->sentencia = $this->db->prepare($sql);
+        if (!$this->sentencia->execute($parametros)) {
+            self::enviarError($this->db->errorInfo());
+        }
+    }
+
+    /**
+     * Función para ejecutar consultar de tipo INSERT, UPDATE, DELETE
+     */
+    protected function ejecutarSentencia() {
+        if (!$this->sentencia->execute()) {
             self::enviarError($this->db->errorInfo());
         }
     }

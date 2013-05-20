@@ -12,8 +12,14 @@
 <h2>DETALLE DE USUARIO</h2>
 <table width="416" border="1" cellspacing="0" cellpadding="2">
   <tr>
+    <th scope="row">&nbsp;</th>
+    <td>
+    <img src="<?php echo $foto; ?>"/>
+    </td>
+  </tr>
+  <tr>
     <th width="197" scope="row">Documento</th>
-    <td width="211"><a href="/usuario/detalle/<?php echo $usuario->getDocumento();?>"><?php echo $usuario->getDocumento();?></a></td>
+    <td width="211"><?php echo $usuario->getDocumento();?></td>
   </tr>
   <tr>
     <th scope="row">Nombre</th>

@@ -6,9 +6,6 @@
         <title><?php echo $titulo; ?></title>
     </head>
     <body>
-        <p>
-            <?php include HOME . DS . 'includes' . DS . 'menu.php'; ?>
-        </p>
         <h2>ACCEDER</h2>
         <form name="form1" action="/Pruebas/usuario/entrar" method="post">
             <table border="1" width="500" cellspacing="0" cellpadding="0">
@@ -24,6 +21,9 @@
                     <tr>
                         <td colspan="2"><input name="enviar" id="enviar" type="submit" value="Entrar" /></td>
                     </tr>
+                    <tr>
+                      <td colspan="2" align="center"><a href="/Pruebas/usuario/olvidoclave">Olvidé mi contraseña!</a></td>
+                  </tr>
                 </tbody>
             </table>
         </form>
