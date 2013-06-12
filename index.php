@@ -40,6 +40,12 @@ function cargadorClases(){
     require_once './utiles/class.phpmailer.php';
     require_once './utiles/class.pop3.php';
     require_once './utiles/class.smtp.php';
+    require_once './utiles/Oauth.php';
+    require_once './utiles/Facebook.php';
+    require_once './utiles/Google.php';
+    require_once './utiles/Twitter.php';
+
+    
 }
 
 //spl_autoload_register(cargadorClases);

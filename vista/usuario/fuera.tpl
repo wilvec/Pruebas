@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title><?php echo $titulo; ?></title>
+        <title><?php echo isset($titulo) ? $titulo:'FUERA'; ?></title>
     </head>
     <body>
         <h2>FUERA</h2>

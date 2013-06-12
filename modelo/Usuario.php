@@ -201,6 +201,22 @@ class Usuario extends Modelo {
         }
         return $usuario;
     }
+    
+    public function leerUsuarioPorIdSocial($id, $social){
+        //TODO: Hacer las funciones de encriptacion en php 
+        //$clave = encriptar_sha($clave)
+
+        $sql = "SELECT * FROM usuario WHERE $social=?";
+        $param = array($id);
+        $this->__setSql($sql);
+        $res = $this->consultar($sql, $param);
+        $usuario = NULL;
+        foreach ($res as $fila) {
+            $usuario = new Usuario();
+            $this->mapearUsuario($usuario, $fila);
+        }
+        return $usuario;
+    }
 
     public function leerUsuarioPorMail($documento, $email) {
         //TODO: Hacer las funciones de encriptacion en php 

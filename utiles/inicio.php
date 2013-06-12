@@ -10,9 +10,9 @@
 $controlador = "Usuario";
 $accion = "index";
 $consulta = null;
-$peticion = $_GET['leer'];
+$peticion = isset($_GET['leer']) ? $_GET['leer']:NULL;
 
-if (!(preg_match("/\.css$/", $peticion) || preg_match("/\.js$/", $peticion) || preg_match("/\.jpg$/", $peticion))) {
+if (!(preg_match("/\.css$/", $peticion) || preg_match("/\.js$/", $peticion) || preg_match("/\.jpg$/", $peticion) || preg_match("/\.png$/", $peticion) ) ) {
 
     if (isset($peticion)) {
         $parametros = array();

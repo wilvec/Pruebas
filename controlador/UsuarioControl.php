@@ -106,6 +106,150 @@ class UsuarioControl extends Controlador {
         return $this->vista->imprimir();
     }
 
+    public function accesofb($social) {
+        session_start();
+        $cfg = Configuracion::getConfiguracion('social_login');
+        $app_id = '';
+        $app_secret = '';
+        $app_cb = '';
+        $url = '';
+        $oauthObj = null;
+        if (isset($social) && $social == 'face') {
+            $app_id = $cfg['FB_APP_ID'];
+            $app_secret = $cfg['FB_APP_SECRET'];
+            $app_cb = $cfg['FB_APP_CB'];
+            $url = $cfg['FB_APP_INFO'];
+            $oauthObj = new Facebook($app_id, $app_secret, $app_cb);
+        } else if (isset($social) && $social == 'twitter') {
+            $app_id = $cfg['TW_APP_ID'];
+            $app_secret = $cfg['TW_APP_SECRET'];
+            $app_cb = $cfg['TW_APP_CB'];
+            $url = $cfg['TW_APP_INFO'];
+            $oauthObj = new Twitter($app_id, $app_secret, $app_cb);
+        } else if (isset($social) && $social == 'google') {
+            $app_id = $cfg['GO_APP_ID'];
+            $app_secret = $cfg['GO_APP_SECRET'];
+            $app_cb = $cfg['GO_APP_CB'];
+            $url = $cfg['GO_APP_INFO'];
+            $oauthObj = new Google($app_id, $app_secret, $app_cb);
+        }
+        $scope = Array('email');
+        $oauthObj->setScope($scope);
+        if ($oauthObj->validateAccessToken()) {
+            try {
+                $response = $oauthObj->makeRequest($url);
+                $_SESSION['datos_social'] = $response;
+                $_SESSION['social'] = $social;
+            } catch (Exception $e) {
+                echo $e;
+            }
+        }
+        return $this->vista->imprimir();
+    }
+
+    public function entrarSocial($social) {
+        $this->vista->set('titulo', 'Acceder a la aplicaci&oacute;n');
+        $this->vista->set('social', $social);
+        session_start();
+        $cfg = Configuracion::getConfiguracion('social_login');
+        $app_id = '';
+        $app_secret = '';
+        $app_cb = 'http://localhost/Pruebas/usuario/test/' . $social;
+        $url = '';
+        $oauthObj = null;
+        if (isset($social) && $social == 'face') {
+            $app_id = $cfg['FB_APP_ID'];
+            $app_secret = $cfg['FB_APP_SECRET'];
+            $app_cb = $cfg['FB_APP_CB'];
+            $url = $cfg['FB_APP_INFO'];
+            $oauthObj = new Facebook($app_id, $app_secret, $app_cb);
+        } else if (isset($social) && $social == 'twitter') {
+            $app_id = $cfg['TW_APP_ID'];
+            $app_secret = $cfg['TW_APP_SECRET'];
+            $app_cb = $cfg['TW_APP_CB'];
+            $url = $cfg['TW_APP_INFO'];
+            $oauthObj = new Twitter($app_id, $app_secret, $app_cb);
+        } else if (isset($social) && $social == 'google') {
+            $app_id = $cfg['GO_APP_ID'];
+            $app_secret = $cfg['GO_APP_SECRET'];
+            $app_cb = $cfg['GO_APP_CB'];
+            $url = $cfg['GO_APP_INFO'];
+            $oauthObj = new Google($app_id, $app_secret, $app_cb);
+        }
+        $scope = Array('email');
+        $oauthObj->setScope($scope);
+        if ($oauthObj->validateAccessToken()) {
+            try {
+                $response = $oauthObj->makeRequest($url);
+                $_SESSION['datos_social'] = $response;
+                $_SESSION['social'] = $social;
+            } catch (Exception $e) {
+                echo $e;
+            }
+        }
+        
+        $datos = isset($_SESSION['datos_social']) ? $_SESSION['datos_social'] : NULL;
+        if ($datos != NULL) {
+            $this->setVista('entrar');
+            $this->entrar();
+        } else {
+            $this->vista->set('mensaje', 'No se pudo acceder a la aplicaci&oacute;n con las credenciales dadas. Por favor, verifique su informaci&oacute;n');
+            return $this->vista->imprimir();
+        }
+    }
+
+    public function socialLogin($param) {
+        $this->vista->set('titulo', 'Acceder a la aplicaci&oacute;n');
+        $this->vista->set('mensaje', $param);
+        return $this->vista->imprimir();
+    }
+
+    public function test($social) {
+        $this->vista->set('titulo', 'Acceder a la aplicaci&oacute;n');
+        $this->vista->set('social', $social);
+        session_start();
+//        $cfg = Configuracion::getConfiguracion('social_login');
+//        $app_id = '';
+//        $app_secret = '';
+//        $app_cb = 'http://localhost/Pruebas/usuario/entrar/' . $social;
+//        $url = '';
+//        $oauthObj = null;
+//        if (isset($social) && $social == 'face') {
+//            $app_id = $cfg['FB_APP_ID'];
+//            $app_secret = $cfg['FB_APP_SECRET'];
+//            //$app_cb = $cfg['FB_APP_CB'];
+//            $url = $cfg['FB_APP_INFO'];
+//            $oauthObj = new Facebook($app_id, $app_secret, $app_cb);
+//        } else if (isset($social) && $social == 'twitter') {
+//            $app_id = $cfg['TW_APP_ID'];
+//            $app_secret = $cfg['TW_APP_SECRET'];
+//            //$app_cb = $cfg['TW_APP_CB'];
+//            $url = $cfg['TW_APP_INFO'];
+//            $oauthObj = new Twitter($app_id, $app_secret, $app_cb);
+//        } else if (isset($social) && $social == 'google') {
+//            $app_id = $cfg['GO_APP_ID'];
+//            $app_secret = $cfg['GO_APP_SECRET'];
+//            //$app_cb = $cfg['GO_APP_CB'];
+//            $url = $cfg['GO_APP_INFO'];
+//            $oauthObj = new Google($app_id, $app_secret, $app_cb);
+//        }
+//        $scope = Array('email');
+//        $oauthObj->setScope($scope);
+//        if ($oauthObj->validateAccessToken()) {
+//            try {
+//                $response = $oauthObj->makeRequest($url);
+//                $_SESSION['datos_social'] = $response;
+//                //header('http://localhost/Pruebas/usuario/test');
+//            } catch (Exception $e) {
+//                echo $e;
+//            }
+//        }
+
+        $datos = isset($_SESSION['datos_social']) ? $_SESSION['datos_social'] : NULL;
+        $this->vista->set('mensaje', $datos);
+        return $this->vista->imprimir();
+    }
+
     public function entrar() {
         if (isset($_POST['enviar'])) {
             $documento = isset($_POST['documento']) ? $_POST['documento'] : NULL;
@@ -113,14 +257,25 @@ class UsuarioControl extends Controlador {
             $usuario = $this->modelo->leerUsuarioPorClave($documento, $clave);
             if ($usuario == NULL) {
                 $this->vista->set('mensaje', 'No esta registrado');
-                return $this->vista->imprimir();
+            } else {
+                $this->vista->set('mensaje', 'Entrar a la aplicacion');
+                //MANEJO DE SESIONES
+                $_SESSION['usuario.id'] = $usuario->getDocumento();
             }
-            $this->vista->set('mensaje', 'Entrar a la aplicacion');
-            //MANEJO DE SESIONES
-            session_start();
-            $_SESSION['usuario.id'] = $usuario->getDocumento();
-            return $this->vista->imprimir();
+        } elseif (isset($_SESSION['datos_social'])) {
+            $datos = isset($_SESSION['datos_social']) ? $_SESSION['datos_social'] : NULL;
+            $social = isset($_SESSION['social']) ? $_SESSION['social'] : NULL;
+            $id = isset($datos['id']) ? $datos['id'] : NULL;
+            $usuario = $this->modelo->leerUsuarioPorIdSocial($id, $social);
+            if ($usuario == NULL) {
+                $this->vista->set('mensaje', 'TODO: si no est&oacute; registrado, en aplicaciones sociales se puede registrar el usuario con estos datos.');
+            } else {
+                $this->vista->set('mensaje', 'Entrar a la aplicacion');
+                $_SESSION['usuario.id'] = $usuario->getDocumento();
+                //TODO quitar las variables tipo 'social' de la sesion.
+            }
         }
+        return $this->vista->imprimir();
     }
 
     public function listarCiudad($departamento = '') {
@@ -159,7 +314,6 @@ class UsuarioControl extends Controlador {
             $nombre = $usuario->getNombre() . " " . $usuario->getApellido();
             $mailer->AddAddress($direccion, $nombre);
             $mailer->CharSet = "UTF-8";
-            $mailer->SMTPDebug = true;
             $mailer->Subject = "Cambio de contraseña en la aplicación Pruebas";
             $mailer->MsgHTML($msg1);
             $mailer->IsSMTP();

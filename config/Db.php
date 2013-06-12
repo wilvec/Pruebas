@@ -17,8 +17,8 @@ class Db {
         if (!self::$db) {
             try {
                 $cfg = Configuracion::getConfiguracion('basedatos');
-                $dsn = $cfg['dsn'];
-                self::$db = new PDO($dsn, $cfg['usuario'], $cfg['clave']); //Crea un nuevo objeto PDO (PHP Data Object)
+                $dsn = $cfg['DSN'];
+                self::$db = new PDO($dsn, $cfg['USUARIO'], $cfg['CLAVE']); //Crea un nuevo objeto PDO (PHP Data Object)
                 self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //Indica que lanza una excepción si existe algún error.
                 self::$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); //Establece la propiedad de asociacion para los resultados 
                 // de consulta
